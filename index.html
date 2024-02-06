@@ -37,7 +37,7 @@ const timeAgo = (date) => {
 </script>
 </head>
 <body>
-<div class="px-4 py-5 text-center">
+<div class="px-4 py-5 text-center" style="padding-bottom: 0 !important">
 <img class="d-block mx-auto mb-4" src="sonic-logo.png" alt="SONiC logo">
 <div class="col-lg-6 mx-auto">
 <p class="lead mb-4">
@@ -50,6 +50,7 @@ These images use the following default login: <code>admin</code> / <code>YourPaS
 </div>
 <div class="list-group" id="builds">
 </div>
+<br />
 <div class="px-4 text-center">
 <div class="col-lg-6 mx-auto"
 <p class="lead mt-4">
@@ -67,29 +68,32 @@ qemu-system-x86_64 -machine q35 -m 2048 -smp 4 -hda sonic-vs.img \<br />
 <p class="mt-4">
 Contact: <a href="https://github.com/bluecmd/sonic-builds">GitHub</a> | <a href="https://matrix.to/#/#sonic-net:matrix.org">#sonic-net:matrix.org</a>
 </p>
+<p class="mt-4">
+<a href="https://sonic.software/sai/">SAI Documentation</a>
+</p>
 <i>SONiC and the SONiC logo are trademarks of the Microsoft group of companies</i>
 </p>
 </div>
 </div>
 </div>
 <script>
-fetch('builds.json')
+  fetch('builds.json')
     .then(res => res.json())
     .then((out) => {
-	 let d = document.getElementById('builds');
-	 for (var key in out) {
-	    content = ''
-	    if (Object.keys(out[key]).length == 0) {
-		    content += '<div class="opacity-25"><i>No known successful builds</i></div>'
-	    }
-	    for (var file in out[key]) {
-		    let ta = timeAgo(out[key][file]['date']);
-		    content += '<div class="d-flex gap-2 w-100 justify-content-between">';
-		    content += '<div>';
-		    content += '<li><a href="' + out[key][file]['url'] + '">' + file + '</a></li></div><span class="opacity-25 text-nowrap"><a href="' + out[key][file]['build-url'] + '">' + ta + '</a></span>'
-		    content += '</div>';
-	    }
-	    d.innerHTML += `
+      let d = document.getElementById('builds');
+      Object.keys(out).sort().reverse().forEach((key) => {
+        content = ''
+        if (Object.keys(out[key]).length == 0) {
+          content += '<div class="opacity-25"><i>No known successful builds</i></div>'
+        }
+        for (var file in out[key]) {
+          let ta = timeAgo(out[key][file]['date']);
+          content += '<div class="d-flex gap-2 w-100 justify-content-between">';
+          content += '<div>';
+          content += '<li><a href="' + out[key][file]['url'] + '">' + file + '</a></li></div><span class="opacity-25 text-nowrap"><a href="' + out[key][file]['build-url'] + '">' + ta + '</a></span>'
+          content += '</div>';
+        }
+        d.innerHTML += `
 <span class="list-group-item d-flex gap-3 py-3" aria-current="true">
 <img src="package.png" alt="package" width="64" height="47" class="rounded-circle flex-shrink-0">
 <div class="d-flex gap-2 w-100 justify-content-between">
@@ -99,8 +103,8 @@ fetch('builds.json')
 </div>
 </div>
 </span>`;
-	 }
-}).catch(err => console.error(err));
+      });
+    }).catch(err => console.error(err));
 </script>
 
 </body>

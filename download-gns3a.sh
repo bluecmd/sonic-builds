@@ -49,7 +49,7 @@ echo "
     \"qemu\": {
         \"adapter_type\": \"e1000\",
         \"adapters\": 10,
-        \"ram\": 2048,
+        \"ram\": 4096,
         \"hda_disk_interface\": \"virtio\",
         \"arch\": \"x86_64\",
         \"console_type\": \"telnet\",
